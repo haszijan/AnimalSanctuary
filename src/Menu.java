@@ -19,7 +19,7 @@ public class Menu {
     }
 
     void menulayout() {
-        System.out.println("=============== MENU ===============");
+        System.out.println("\n=============== MENU ===============");
         System.out.println("1. Add animal");
         System.out.println("2. Remove animal");
         System.out.println("3. Status");
@@ -32,22 +32,30 @@ public class Menu {
     void parseAnswer(String answer) {
         switch (answer) {
             case "1":
-                System.out.print("Enter name: ");
-                animal.setName(scanner.nextLine());
-                System.out.println("Choose species.");
-                System.out.println("C: CAT");
-                System.out.println("D: DOG");
-                chooseSpecies();
-                addAnimal();
+                isAnyFreeSlot();
+                if (isAnyFreeSlot() == true) {
+                    System.out.print("Enter name: ");
+                    animal.setName(scanner.nextLine());
+                    chooseSpecies();
+                    addAnimal();
+                }
+                else {
+                    System.out.println("No vacancies.");
+                }
                 printAnimals();
                 break;
 
             case "2":
                 printAnimals();
                 System.out.print("Enter name of animal to remove it from the list: ");
-                String name = scanner.nextLine();
-                removeAnimal(name);
+                animal.setName(scanner.nextLine());
+                chooseSpecies();
+                removeAnimal();
                 printAnimals();
+                break;
+
+            case "3":
+                amountofFreeSlots();
                 break;
 
             case "0":
@@ -57,15 +65,16 @@ public class Menu {
         }
 
     void chooseSpecies () {
+        System.out.println("Choose species.");
+        System.out.println("C: CAT");
+        System.out.println("D: DOG");
         String chosenSpecies = scanner.nextLine();
         switch (chosenSpecies) {
             case "C":
                 animal.setSpecies(Species.CAT);
-                System.out.println("New cat has been added.");
                 break;
             case "D":
                 animal.setSpecies(Species.DOG);
-                System.out.println("New dog has been added.");
                 break;
             default:
                 System.out.println("Choose C for CAT or D for DOG.");
@@ -77,10 +86,28 @@ public class Menu {
     }
 
     void printAnimals() {
-        System.out.println(shelter.getAnimals());
+        for (Animal animal : shelter.getAnimals()) {
+            System.out.println(animal);
+        }
     }
 
-    void removeAnimal(String name) {
-        
+    void removeAnimal() {
+        System.out.println(shelter.getAnimals().remove(animal));
+    }
+
+    void amountofFreeSlots() {
+        System.out.println(shelter.getAnimals().size());
+        if (shelter.getAnimals().size() < shelter.getShelterCapacity()) {
+            System.out.println("We have still free slots.");
+        }
+        else {
+            System.out.println("No vacancies.");
+        }
+    }
+
+    boolean isAnyFreeSlot() {
+        if (shelter.getAnimals().size() < shelter.getShelterCapacity()) {
+            return true;
+        } else return false;
     }
 }
