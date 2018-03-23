@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Menu {
@@ -5,14 +6,18 @@ public class Menu {
     private Shelter shelter;
     private Scanner scanner;
     private Animal animal;
+    private DBUtil dbUtil;
 
     public Menu() {
         shelter = new Shelter();
         scanner = new Scanner(System.in);
         animal = new Animal();
+        dbUtil = new DBUtil();
     }
 
-    void start() {
+    void start() throws SQLException {
+        dbUtil.connectToDB();
+
         do {
             menulayout();
         } while (true);
